@@ -71,15 +71,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if searchText.isEmpty {
             filteredContacts = appd.allContacts
         } else {
-            filteredContacts = appd.allContacts.filter({ (contact) -> Bool in
+            filteredContacts.removeAll()
+            for contact in appd.allContacts {
                 for phone in contact.phoneNumbers {
                     let phoneNumber = phone.value.stringValue.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
                     if phoneNumber.contains(searchText) {
-                        return true
+                        filteredContacts.append(contact)
                     }
                 }
-                return false
-            })
+            }
         }
         tableView.reloadData()
     }
