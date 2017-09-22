@@ -53,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         contactStore.requestAccess(for: .contacts) { (sucess, error) in
             //you can use one of these/ all keys to filter contacts
-            let keysToFetch = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactOrganizationNameKey,   CNContactJobTitleKey, CNContactPhoneNumbersKey, CNContactIdentifierKey]
+            let keysToFetch = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactOrganizationNameKey,   CNContactJobTitleKey, CNContactPhoneNumbersKey, CNContactIdentifierKey, CNContactFormatter. as Any]
             do{
                 // _______________ Fetch all the Containers_________________________________
                 allContainers = try contactStore.containers(matching: nil)
@@ -66,7 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let fetchPredicate = CNContact.predicateForContactsInContainer(withIdentifier: container.identifier)
                 do{
                     //____________Fetch all the contacts corresponding to every Container______
-                    let containerResults = try contactStore.unifiedContacts(matching: fetchPredicate, keysToFetch: keysToFetch as [CNKeyDescriptor])
+                    let containerResults = try contactStore.unifiedContacts(matching: fetchPredicate, keysToFetch: keysToFetch as! [CNKeyDescriptor])
                     self.allContacts.append(contentsOf: containerResults)
                     NotificationCenter.default.post(name: Notification.Name("Reload"), object: nil)
 

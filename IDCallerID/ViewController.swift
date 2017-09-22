@@ -19,7 +19,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: NSNotification.Name(rawValue: "Reload"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.reloadData), name: NSNotification.Name(rawValue: "Reload"), object: nil)
 
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 55.0
@@ -53,8 +53,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         cell = tableView.dequeueReusableCell(withIdentifier: "ContactTableViewCell") as? ContactTableViewCell
         
         if cell == nil {
-            cell = UINib(nibName: "ContactTableViewCell", bundle:nil) as? ContactTableViewCell
-            cell = ContactTableViewCell()
+            cell = UINib(nibName: "ContactTableViewCell", bundle:nil).instantiate(withOwner: self, options: nil)[0] as! UIView as? ContactTableViewCell
         }
         
         let contact = filteredContacts[indexPath.row]
@@ -82,6 +81,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             }
         }
         tableView.reloadData()
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedContact = filteredContacts[indexPath.row]
+        
+        let unkvc = CNContactViewController(for: selectedContact)
+        self.navigationController?.pushViewController(unkvc, animated: true)
+
     }
 }
 
